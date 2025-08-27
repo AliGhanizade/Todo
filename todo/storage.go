@@ -8,8 +8,43 @@ import (
 
 var FileName string = "todo.json"
 
-func SaveTasksToFile(tasks Task) error {
-	// First, read the existing tasks from the file.
+func RemoveTaskFromFIle(id int) ([]Task, error) {
+	data, err := os.ReadFile(FileName)
+	if err != nil && !os.IsNotExist(err) {
+		return nil, fmt.Errorf("error reading file: %w", err)
+	}
+	var existingTasks []Task
+	if len(data) > 0 {
+		// If the file is not empty, unmarshal the existing JSON data.
+		err = json.Unmarshal(data, &existingTasks)
+		if err != nil {
+			return nil, fmt.Errorf("could not unmarshal existing JSON: %w", err)
+		}
+	}
+	for i, t := range existingTasks {
+		if t.ID == id {
+			return append(existingTasks[:i], existingTasks[i+1:]...), nil
+			
+		}
+	}
+	return nil, fmt.Errorf("cant find id : %d", id)
+}
+
+func SaveTasksToFile(tasks []Task) error {
+	os.Remove(FileName)
+	jsonData, err := json.MarshalIndent(tasks, "", "  ")
+	if err != nil {
+		return fmt.Errorf("could not marshal tasks to JSON: %w", err)
+	}
+
+	err = os.WriteFile(FileName, jsonData, 0644)
+	if err != nil {
+		return fmt.Errorf("cant write in file: %w", err)
+	}
+	return nil
+}
+
+func SaveTaskToFile(tasks Task) error {
 	data, err := os.ReadFile(FileName)
 	if err != nil && !os.IsNotExist(err) {
 		return fmt.Errorf("error reading file: %w", err)
@@ -17,23 +52,19 @@ func SaveTasksToFile(tasks Task) error {
 
 	var existingTasks []Task
 	if len(data) > 0 {
-		// If the file is not empty, unmarshal the existing JSON data.
 		err = json.Unmarshal(data, &existingTasks)
 		if err != nil {
 			return fmt.Errorf("could not unmarshal existing JSON: %w", err)
 		}
 	}
 
-	// Append the new task to the slice of existing tasks.
 	existingTasks = append(existingTasks, tasks)
 
-	// Marshal the entire slice (including the new task) back to JSON.
 	jsonData, err := json.MarshalIndent(existingTasks, "", "  ")
 	if err != nil {
 		return fmt.Errorf("could not marshal tasks to JSON: %w", err)
 	}
 
-	// Write the entire, updated JSON array back to the file, overwriting the old content.
 	err = os.WriteFile(FileName, jsonData, 0644)
 	if err != nil {
 		return fmt.Errorf("cant write in file: %w", err)
