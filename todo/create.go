@@ -15,7 +15,7 @@ func Create() {
 
 	fmt.Print("Enter title: ")
 	title, _ := reader.ReadString('\n')
-	task.Title = strings.TrimSpace(title) // Remove leading/trailing whitespace and newline
+	task.Title = strings.TrimSpace(title) 
 
 	fmt.Print("Enter description: ")
 	description, _ := reader.ReadString('\n')
@@ -26,7 +26,7 @@ func Create() {
 
 	task.ID = LenTasks() + 1
 
-	err := SaveTasksToFile(task)
+	err := SaveTaskToFile(task)
 	if err != nil {
 		fmt.Print(err)
 		return
