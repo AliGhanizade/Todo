@@ -1,32 +1,24 @@
 package main
 
 import (
-	"bufio"
-	"fmt"
-	"os"
-	"strings"
-	"todoCLI/todo"
+	"todo/config"
+	"todo/model"
+	"todo/router"
+
+	"github.com/glebarez/sqlite"
+	"gorm.io/gorm"
 )
 
 func main() {
-	for {
-
-		fmt.Print("\tWrite Work\nShow-Create-Delete-exit :")
-		reader := bufio.NewReader(os.Stdin)
-
-		
-		work, _ := reader.ReadString('\n')
-		work = strings.TrimSpace(work)
-		switch work {
-		case "Show":
-			todo.GetAll()
-		case "Create":
-			todo.Create()
-		case "Delete":
-			todo.Delete()
-		case "exit":
-			os.Exit(1)
-		}
+	var err error
+	config.Db, err = gorm.Open(sqlite.Open(config.DBName), &gorm.Config{})
+	if err != nil {
+		panic("failed to connect database")
 	}
 
+	config.Db.AutoMigrate(&model.Task{})
+
+	r := router.SetupRouter()
+
+	r.Run(":9092")
 }
