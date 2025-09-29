@@ -8,21 +8,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 /*
-sample request
+Create a task :
+
+Router /tasks [post]
 {
 	"title": "Sample Task",
 	"description": "This is a sample task",
 	"completed": false
 }
-sample response
-{
-	"status": "success",
-	"data": {
-		"id": 1,
-		"title": "Sample Task",
-		"completed": false
-	}
-}
+
 */
 func (t *TaskController) Create(ctx *gin.Context) {
 	var task model.Task

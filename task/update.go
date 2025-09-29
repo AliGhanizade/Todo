@@ -9,6 +9,18 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+/*
+Update a task by ID:
+
+Router /task/{id} [put]
+{
+	"title": "Updated Task",
+	"description": "This is an updated task",
+	"completed": true
+}
+*/
+
+
 
 func (t *TaskController) Update(ctx *gin.Context) {
 	var task model.Task

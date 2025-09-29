@@ -8,6 +8,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+/*
+Show all Tasks
+
+Router /task [get]
+*/
 func (t *TaskController) GetAll(ctx *gin.Context) {
 	var task model.Task
 	tasks, err := task.GetAll()
@@ -18,6 +23,11 @@ func (t *TaskController) GetAll(ctx *gin.Context) {
 	share.NewResponse(http.StatusOK, "Tasks retrieved successfully", tasks, ctx)
 }
 
+/*
+Show a task by ID
+
+Router /task/{id} [get]
+*/
 func (t *TaskController) GetByID(ctx *gin.Context) {
 	var task model.Task
 	var uri share.TaskURI

@@ -8,7 +8,11 @@ import (
 
 	"github.com/gin-gonic/gin"
 )
+/*
+Delete a task by ID:
 
+Router /task/{id} [delete]
+*/
 func (t *TaskController) Delete(ctx *gin.Context) {
 	var task model.Task
 	var uri share.TaskURI
