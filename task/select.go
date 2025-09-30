@@ -2,6 +2,7 @@ package task
 
 import (
 	"net/http"
+	"strconv"
 	"todo/model"
 	"todo/share"
 
@@ -22,13 +23,14 @@ func (t *TaskController) GetAll(ctx *gin.Context) {
 		return
 	}
 
-	var task model.Task
-	tasks, err := task.GetAll()
+	limit := 5
+	page, err := strconv.Atoi(ctx.DefaultQuery("page", "1"))
 	if err != nil {
-		share.NewError(http.StatusInternalServerError, err.Error(), ctx)
+		share.NewError(http.StatusBadRequest, err.Error(), ctx)
 		return
 	}
-	share.NewResponse(http.StatusOK, "Tasks retrieved successfully", tasks, ctx)
+
+	t.Pagination(page, limit, ctx)
 }
 
 /*
@@ -48,7 +50,16 @@ func (t *TaskController) GetByID(ctx *gin.Context) {
 
 	err = task.GetByID(uri.ID)
 	if err != nil {
+		if err.Error() == "record not found" {
+			share.NewNotFound(http.StatusNotFound, "Task not found", ctx)
+			return
+		}
 		share.NewError(http.StatusInternalServerError, err.Error(), ctx)
+		return
+	}
+
+	if task.ID == 0 {
+		share.NewNotFound(http.StatusNotFound, "Task not found", ctx)
 		return
 	}
 

@@ -72,3 +72,11 @@ func (t *Task) Search(title string, isComplete bool) ([]Task, error) {
 
 	return tasks, nil
 }
+
+func (t *Task) Pagination(page, limit int) ([]Task, error) {
+	var tasks []Task
+	if err := config.Db.Offset((page - 1) * limit).Limit(limit).Find(&tasks).Error; err != nil {
+		return nil, err
+	}
+	return tasks, nil
+}
