@@ -51,3 +51,24 @@ func (t *Task) Delete(id uint) error {
 	}
 	return nil
 }
+
+func (t *Task) Search(title string, isComplete bool) ([]Task, error) {
+	var tasks []Task
+	dbQuery := config.Db.Model(&Task{})
+
+	if title != "" {
+		dbQuery = dbQuery.Where("title LIKE ?", "%"+title+"%")
+	}
+
+	if isComplete {
+		dbQuery = dbQuery.Where("is_completed = ?", true)
+	} else {
+		dbQuery = dbQuery.Where("is_completed = ?", false)
+	}
+
+	if err := dbQuery.Find(&tasks).Error; err != nil {
+		return nil, err
+	}
+
+	return tasks, nil
+}

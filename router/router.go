@@ -10,7 +10,7 @@ func SetupRouter() *gin.Engine {
 	r := gin.Default()
 
 	taskC := task.TaskController{}
-	task := r.Group("/task")
+	task := r.Group("/tasks")
 	{
 		task.POST("/", taskC.Create)
 		task.GET("/", taskC.GetAll)

@@ -14,6 +14,14 @@ Show all Tasks
 Router /tasks [get]
 */
 func (t *TaskController) GetAll(ctx *gin.Context) {
+	title  := ctx.Query("title")
+	status := ctx.Query("is_completed")
+
+	if title != "" || status != "" {
+		t.Search(title, status, ctx)
+		return
+	}
+
 	var task model.Task
 	tasks, err := task.GetAll()
 	if err != nil {
