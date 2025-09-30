@@ -28,3 +28,15 @@ func NewError(code int, message string, ctx *gin.Context)  {
 		Message: message,
 	})
 }
+
+type NotFound struct {
+	Code    int    `json:"code"`
+	Message string `json:"message"`
+}
+
+func NewNotFound(code int, message string, ctx *gin.Context)  {
+	ctx.JSON(code, NotFound{
+		Code:    code,
+		Message: message,
+	})
+}

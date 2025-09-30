@@ -17,15 +17,15 @@ func (t *TaskController) Search(title, status string, ctx *gin.Context) {
 		share.NewError(http.StatusBadRequest, err.Error(), ctx)
 		return
 	}
+	
 	tasks, err := task.Search(title, isComplete)
-
 	if err != nil {
 		share.NewError(http.StatusInternalServerError, err.Error(), ctx)
 		return
 	}
 
 	if len(tasks) == 0 {
-		share.NewError(http.StatusNotFound, "No tasks found", ctx)
+		share.NewNotFound(http.StatusNotFound, "No tasks found", ctx)
 		return
 	}
 
