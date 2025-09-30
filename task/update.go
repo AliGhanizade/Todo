@@ -12,7 +12,7 @@ import (
 /*
 Update a task by ID:
 
-Router /task/{id} [put]
+Router /tasks/{id} [put]
 {
 	"title": "Updated Task",
 	"description": "This is an updated task",

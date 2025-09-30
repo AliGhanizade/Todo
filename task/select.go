@@ -11,7 +11,7 @@ import (
 /*
 Show all Tasks
 
-Router /task [get]
+Router /tasks [get]
 */
 func (t *TaskController) GetAll(ctx *gin.Context) {
 	var task model.Task
@@ -26,7 +26,7 @@ func (t *TaskController) GetAll(ctx *gin.Context) {
 /*
 Show a task by ID
 
-Router /task/{id} [get]
+Router /tasks/{id} [get]
 */
 func (t *TaskController) GetByID(ctx *gin.Context) {
 	var task model.Task

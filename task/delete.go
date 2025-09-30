@@ -11,7 +11,7 @@ import (
 /*
 Delete a task by ID:
 
-Router /task/{id} [delete]
+Router /tasks/{id} [delete]
 */
 func (t *TaskController) Delete(ctx *gin.Context) {
 	var task model.Task
