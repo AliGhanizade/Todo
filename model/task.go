@@ -1,15 +1,16 @@
 package model
 
 import (
-	"gorm.io/gorm"
 	"todo/config"
+
+	"gorm.io/gorm"
 )
 
 type Task struct {
 	gorm.Model
-	Title       string `json:"title"`
-	Description string `json:"description"`
-	IsCompleted bool   `json:"is_completed"`
+	Title       string `json:"title" gorm:"not null"`
+	Description string `json:"description" `
+	IsCompleted bool   `json:"is_completed" gorm:"default:false"`
 }
 
 func (m *Task) TableName() string {
